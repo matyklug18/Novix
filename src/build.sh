@@ -16,3 +16,6 @@ mkdir -p isodir/boot/grub
 cp myos.bin isodir/boot/niux.bin
 cp grub.cfg isodir/boot/grub/grub.cfg
 grub-mkrescue -o niux.iso isodir
+
+# then we test it
+qemu-system-i386 -cdrom niux.iso
