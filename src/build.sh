@@ -7,15 +7,12 @@ rm niux.iso
 rm boot.o
 rm kernel.o
 rm myos.bin
+rm *.o
 
 # build process
-../i686-elf-cross/bin/i686-elf-as boot.s -o boot.o
-../i686-elf-cross/bin/i686-elf-gcc -c kernel.c -o kernel.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
-../i686-elf-cross/bin/i686-elf-gcc -T linker.ld -o myos.bin -ffreestanding -O2 -nostdlib boot.o kernel.o -lgcc
-mkdir -p isodir/boot/grub
-cp myos.bin isodir/boot/niux.bin
-cp grub.cfg isodir/boot/grub/grub.cfg
-grub-mkrescue -o niux.iso isodir
+nasm -f aout -o start.o start.asm
+gcc -Wall -O -fstrength-reduce -fomit-frame-pointer -finline-functions -nostdinc -fno-builtin -I./include -c -o main.o main.c
+ld -T link.ld -o kernel.bin start.o
 
 # then we test it
-qemu-system-i386 -cdrom niux.iso
+# qemu-system-i386 -cdrom niux.iso
