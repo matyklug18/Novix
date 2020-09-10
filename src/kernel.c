@@ -45,6 +45,7 @@ void outportb (unsigned short _port, unsigned char _data)
 *  infinite loop. This will be like our 'idle' loop */
 void main()
 {
+    gdt_install();
     for (;;);
 }
 		
