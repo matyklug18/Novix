@@ -39,3 +39,13 @@ flush2:
 SECTION .bss
     resb 8192               ; This reserves 8KBytes of memory here
 _sys_stack:
+
+
+; Loads the IDT defined in '_idtp' into the processor.
+; This is declared in C as 'extern void idt_load();'
+global idt_load
+extern _idtp
+idt_load:
+    lidt [_idtp]
+    ret
+		

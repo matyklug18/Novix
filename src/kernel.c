@@ -1,4 +1,5 @@
 #include "system.h"
+#include "scrn.c"
 
 /* You will need to code these up yourself!  */
 unsigned char *memcpy(unsigned char *dest, const unsigned char *src, int count)
@@ -46,6 +47,7 @@ void outportb (unsigned short _port, unsigned char _data)
 void main()
 {
     gdt_install();
+    idt_install();
     for (;;);
 }
 		
