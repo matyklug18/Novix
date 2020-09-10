@@ -1,21 +1,30 @@
-OUTPUT_FORMAT(elf32-i386)
-ENTRY(entry_point)
+ENTRY(_start)
 
-SECTIONS {
-    . = 0x100000;
-    .multiboot : ALIGN(4K) {
+SECTIONS
+{
+    . = 1M;
+
+    .text BLOCK(4K) : ALIGN(4K)
+    {
         *(.multiboot)
+        *(.text)
     }
-    .text : ALIGN(4K) {
-        *(.text*)
-    }
-    .data : ALIGN(4K)  {
-        *(.data)
-    }
-    .rodata : ALIGN(4K) {
+
+    .rodata BLOCK(4K) : ALIGN(4K)
+    {
         *(.rodata)
     }
-    .bss : ALIGN(4K) {
+
+    .data BLOCK(4K) : ALIGN(4K)
+    {
+        *(.data)
+    }
+
+    .bss BLOCK(4K) : ALIGN(4K)
+    {
+        *(COMMON)
         *(.bss)
     }
 }
+
+/* boom linker done */
