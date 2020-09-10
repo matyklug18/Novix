@@ -1,25 +1,21 @@
-OUTPUT_FORMAT("binary")
-ENTRY(start)
-phys = 0x00100000;
-SECTIONS
-{
-  .text phys : AT(phys) {
-    code = .;
-    *(.text)
-    *(.rodata)
-    . = ALIGN(4096);
-  }
-  .data : AT(phys + (data - code))
-  {
-    data = .;
-    *(.data)
-    . = ALIGN(4096);
-  }
-  .bss : AT(phys + (bss - code))
-  {
-    bss = .;
-    *(.bss)
-    . = ALIGN(4096);
-  }
-  end = .;
+OUTPUT_FORMAT(elf32-i386)
+ENTRY(entry_point)
+
+SECTIONS {
+    . = 0x100000;
+    .multiboot : ALIGN(4K) {
+        *(.multiboot)
+    }
+    .text : ALIGN(4K) {
+        *(.text*)
+    }
+    .data : ALIGN(4K)  {
+        *(.data)
+    }
+    .rodata : ALIGN(4K) {
+        *(.rodata)
+    }
+    .bss : ALIGN(4K) {
+        *(.bss)
+    }
 }
