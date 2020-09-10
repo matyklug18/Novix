@@ -91,6 +91,10 @@ void terminal_putchar(char c)
 		if (++terminal_row == VGA_HEIGHT)
 			terminal_row = 0;
 	}
+	if (c == '\n'){
+		terminal_row++;
+		terminal_column = 0;
+	}
 }
  
 void terminal_write(const char* data, size_t size) 
@@ -106,5 +110,5 @@ void terminal_writestring(const char* data)
  
 void kernel_main(void) {
 	terminal_initialize();
-	terminal_writestring("Hello world\n");
+	terminal_writestring("Niux v1.0 Starting...\n");
 }
