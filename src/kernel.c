@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
+#include "tools/nfetch.c"
  
 /* Check if the compiler thinks you are targeting the wrong operating system. */
 #if defined(__linux__)
@@ -110,5 +111,5 @@ void terminal_writestring(const char* data)
  
 void kernel_main(void) {
 	terminal_initialize();
-	terminal_writestring("Niux v1.0 Starting...\n");
+	niux_fetch();
 }
