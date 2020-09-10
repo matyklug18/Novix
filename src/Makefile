@@ -8,3 +8,12 @@ test:
 clean_up:
 	rm *.o
 	rm *.bin
+	rm *.iso
+	rm -rf isodir
+
+run:
+	rm -rf isodir
+	mkdir -p isodir/boot/grub
+	cp kernel.bin isodir/boot/kernel.bin
+	cp grub.cfg isodir/boot/grub/grub.cfg
+	grub-mkrescue -o niux.iso isodir
