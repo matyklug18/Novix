@@ -5,3 +5,4 @@ i686-elf-cross/
 *.o
 *.iso
 *.bin
+src/isodir/
