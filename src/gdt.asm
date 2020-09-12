@@ -4,7 +4,7 @@ GLOBAL pointer
 global pointer
 extern GDT ; easy
 GLOBAL loadGDT:
-    lgdt [pointer]
+    lgdt [gdt_pointer]
     
     ; load all the segment registers here
     ; you can't directly mov to them so you need to do like
