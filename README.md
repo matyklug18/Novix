@@ -1,10 +1,11 @@
-## Niux: Another Kernel
+## Niux: Another Kernel, For an OS.
 Kernel built in Pure Assembly, and C
 
 
 ## What does it do?
 
-It does kernel things
+It does kernel things, such as handle interrput
+requests.
 
 
 # Development
