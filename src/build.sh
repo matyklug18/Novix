@@ -20,7 +20,7 @@ rm *.o *.iso *.bin
 nasm -f elf gdt.asm
 
 # linking it
-../i686-elf-cross/bin/i686-elf-gcc -T linker.ld -o niux.bin -ffreestanding -O2 -nostdlib boot.o gdt.o kernel.o -lgcc
+../i686-elf-cross/bin/i686-elf-gcc -T linker.ld -o niux.bin -ffreestanding -O2 -nostdlib boot.o gdt.o gdt_2.o kernel.o -lgcc
 
 
 # show that it was compiled

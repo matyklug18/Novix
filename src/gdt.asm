@@ -1,6 +1,7 @@
-global gdt_pointer
-GLOBAL loadGDT:
-    lgdt [gdt_pointer]
+extern gdtr
+global loadGDT ; make global
+loadGDT:
+    lgdt [gdtr]
 
     ; load all the segment registers here
     ; you can't directly mov to them so you need to do like
