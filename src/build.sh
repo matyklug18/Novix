@@ -13,6 +13,9 @@ rm *.o *.iso *.bin
 # kernel.c
 ../i686-elf-cross/bin/i686-elf-gcc -c kernel.c -o kernel.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
 
+# gdt.c
+../i686-elf-cross/bin/i686-elf-gcc -c gdt.c -o gdt_2.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
+
 # gdt.asm
 nasm -f elf gdt.asm
 
@@ -30,4 +33,3 @@ mkdir -p isodir/boot/grub
 cp grub.cfg isodir/boot/grub/grub.cfg
 cp niux.bin isodir/boot/niux.bin
 grub-mkrescue -o niux.iso isodir
-true
