@@ -2,6 +2,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include "tools/nfetch.c"
+#include "init.c" // i tried making an init system, ok?
 
 /* Check if the compiler thinks you are targeting the wrong operating system. */
 #if defined(__linux__)
@@ -111,5 +112,6 @@ void terminal_writestring(const char* data)
 
 void kernel_main(void) {
 	terminal_initialize();
-	niux_fetch();
+	// init();
+	terminal_writestring("Hey redddit.");
 }
