@@ -22,3 +22,6 @@ export BUILD_DIR
 
 all:
 	$(MAKE) -C src all
+
+qemu: all
+	qemu-system-i386 -cdrom $(BUILD_DIR)/novix.iso
