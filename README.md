@@ -14,7 +14,9 @@ requests.
 
 ```
 cd src
-./build.sh
+make clean # <---- this is to make sure everything unnecessary is gone (not needed)
+make build # <---- build the .bin file
+make iso   # <---- create the iso (will be in src/niux.iso)
 ````
 
 You're gonna need these dependencies for building:
