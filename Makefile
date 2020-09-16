@@ -21,6 +21,7 @@ export GCC
 export BUILD_DIR
 
 all:
+	mkdir -p $(BUILD_DIR)
 	$(MAKE) -C src all
 
 qemu: all

@@ -2,8 +2,4 @@
 # and will cause a mess
 build/
 i686-elf-cross/
-*.o
-*.iso
-*.bin
-src/isodir/
 _build

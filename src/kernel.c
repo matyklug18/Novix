@@ -112,5 +112,5 @@ void terminal_writestring(const char* data)
 void kernel_main(void) {
 	terminal_initialize();
 	// init();
-	terminal_writestring("Hey redddit.");
+	loadGDT();
 }

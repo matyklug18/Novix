@@ -21,7 +21,6 @@ asm: gdt.asm idt.asm
 	nasm -f elf idt.asm -o $(BUILD_DIR)/idt.o
 
 build: kernel gdt boot idt asm
-	mkdir -p $(BUILD_DIR)
 	$(GCC) \
 		-o $(BUILD_DIR)/novix.bin \
 		-T linker.ld \
@@ -37,7 +36,7 @@ build: kernel gdt boot idt asm
 iso: build
 	mkdir -p $(BUILD_DIR)/isodir/boot/grub
 	cp grub.cfg $(BUILD_DIR)/isodir/boot/grub/grub.cfg
-	cp novix.bin $(BUILD_DIR)/isodir/boot/novix.bin
+	cp $(BUILD_DIR)/novix.bin $(BUILD_DIR)/isodir/boot/novix.bin
 	$(MKRESCUE) -o $(BUILD_DIR)/novix.iso $(BUILD_DIR)/isodir
 
 all: iso
