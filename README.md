@@ -16,7 +16,7 @@ requests.
 cd src
 make clean # <---- this is to make sure everything unnecessary is gone (not needed)
 make build # <---- build the .bin file
-make iso   # <---- create the iso (will be in src/niux.iso)
+make iso   # <---- create the iso (will be in src/novix.iso)
 ````
 
 You're gonna need these dependencies for building:
@@ -47,10 +47,10 @@ You're also gonna want to build the i686-elf toolchain with
 
 ### On real hardware
 ```
-sudo dd if=niux.iso of=[device] bs=4M
+sudo dd if=novix.iso of=[device] bs=4M
 ```
 
 ### With QEMU
 ```
-qemu-system-i386 -cdrom niux.iso
+qemu-system-i386 -cdrom novix.iso
 ```
