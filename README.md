@@ -1,4 +1,4 @@
-## Niux: Another Kernel, For an OS.
+## Novix: Another Kernel, For an OS.
 Kernel built in Pure Assembly, and C
 
 
