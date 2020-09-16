@@ -1,7 +1,8 @@
-clean:
-		rm -rf isodir
-		rm *.o *.iso *.bin
+.DEFAULT_GOAL := all
 
+clean:
+	rm -rf isodir
+	rm -f *.o *.iso *.bin
 
 build:
 	../i686-elf-cross/bin/i686-elf-as boot.s -o boot.o
@@ -12,8 +13,10 @@ build:
 	nasm -f elf idt.asm
 	../i686-elf-cross/bin/i686-elf-gcc -T linker.ld -o novix.bin -ffreestanding -O2 -nostdlib boot.o gdt.o gdt_2.o idt.o idt_2.o kernel.o -lgcc
 
-iso:
+iso: build
 	mkdir -p isodir/boot/grub
 	cp grub.cfg isodir/boot/grub/grub.cfg
 	cp novix.bin isodir/boot/novix.bin
 	grub-mkrescue -o novix.iso isodir
+
+all: iso
