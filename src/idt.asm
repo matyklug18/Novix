@@ -1,19 +1,21 @@
-;;; IDT For Novix
-;;; This is written under
-;;; intel syntax.
+EXTERN idtr
+global loadIDT ; make global
+loadGDT:
+    lgdt [idtr]
 
-EXTERN idtr ; note that this IS referenced from C.
-global loadIDT ; define a global function
+    ; load all the segment registers here
+    ; you can't directly mov to them so you need to do like
+    ; mov ax, <selector>
+    ; mov ds, ax
+    ; mov es, ax
+    ; ...
 
-; here we define loadIDT
-loadIDT:
-  ; use lidt with idtr
-  lidt [idtr]
+    ; you cannot directly set cs, you instead need to do a far jump
+    ; so do like jmp <selector>:<label>
+    ; for instance
 
-  ; jump to idt_part_2,
-  ; since i cannot directly set cs.
-  jmp 0x08:idt_part_2
+    jmp part2
 
-idt_part_2:
-  cli
-  ret
+part2:
+    cli
+    ret

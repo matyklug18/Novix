@@ -112,6 +112,14 @@ void terminal_writestring(const char* data)
 void kernel_main(void) {
 	terminal_initialize();
 	// init();
+
+	// First we load the GDT
 	terminal_writestring("Loading GDT...");
 	loadGDT();
+	terminal_writestring("Success!\n");
+
+	// Then we load the IDT.
+	terminal_writestring("Loading IDT...");
+	installIDT();
+	terminal_writestring("Success!\n");
 }
