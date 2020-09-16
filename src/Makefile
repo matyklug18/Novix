@@ -4,19 +4,40 @@ clean:
 	rm -rf isodir
 	rm -f *.o *.iso *.bin
 
-build:
-	../i686-elf-cross/bin/i686-elf-as boot.s -o boot.o
-	../i686-elf-cross/bin/i686-elf-gcc -c kernel.c -o kernel.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
-	../i686-elf-cross/bin/i686-elf-gcc -c gdt.c -o gdt_2.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
-	../i686-elf-cross/bin/i686-elf-gcc -c idt.c -o idt_2.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
-	nasm -f elf gdt.asm
-	nasm -f elf idt.asm
-	../i686-elf-cross/bin/i686-elf-gcc -T linker.ld -o novix.bin -ffreestanding -O2 -nostdlib boot.o gdt.o gdt_2.o idt.o idt_2.o kernel.o -lgcc
+kernel: kernel.c
+	$(GCC) -c kernel.c -o $(BUILD_DIR)/kernel.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
+
+gdt: gdt.c
+	$(GCC) -c gdt.c -o $(BUILD_DIR)/gdt_2.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
+
+boot: boot.s
+	$(ASSEMBLER) boot.s -o $(BUILD_DIR)/boot.o
+
+idt: idt.c
+	$(GCC) -c idt.c -o $(BUILD_DIR)/idt_2.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
+
+asm: gdt.asm idt.asm
+	nasm -f elf gdt.asm -o $(BUILD_DIR)/gdt.o
+	nasm -f elf idt.asm -o $(BUILD_DIR)/idt.o
+
+build: kernel gdt boot idt asm
+	mkdir -p $(BUILD_DIR)
+	$(GCC) \
+		-o $(BUILD_DIR)/novix.bin \
+		-T linker.ld \
+		-ffreestanding -O2 -nostdlib \
+		-lgcc \
+		$(BUILD_DIR)/boot.o \
+		$(BUILD_DIR)/gdt.o \
+		$(BUILD_DIR)/gdt_2.o \
+		$(BUILD_DIR)/idt.o \
+		$(BUILD_DIR)/idt_2.o \
+		$(BUILD_DIR)/kernel.o
 
 iso: build
-	mkdir -p isodir/boot/grub
-	cp grub.cfg isodir/boot/grub/grub.cfg
-	cp novix.bin isodir/boot/novix.bin
-	grub-mkrescue -o novix.iso isodir
+	mkdir -p $(BUILD_DIR)/isodir/boot/grub
+	cp grub.cfg $(BUILD_DIR)/isodir/boot/grub/grub.cfg
+	cp novix.bin $(BUILD_DIR)/isodir/boot/novix.bin
+	$(MKRESCUE) -o $(BUILD_DIR)/novix.iso $(BUILD_DIR)/isodir
 
 all: iso
