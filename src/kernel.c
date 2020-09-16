@@ -124,4 +124,8 @@ void kernel_main(void) {
 	terminal_writestring("Loading IDT...");
 	installIDT();
 	terminal_writestring("Success!\n");
+
+	// once the kernel loads the GDT &
+	// IDT,
+	terminal_writestring("Booting normally...\n")
 }
