@@ -127,5 +127,5 @@ void kernel_main(void) {
 
 	// once the kernel loads the GDT &
 	// IDT,
-	terminal_writestring("Booting normally...\n")
+	terminal_writestring("Booting normally...\n");
 }
