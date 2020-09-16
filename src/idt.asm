@@ -2,7 +2,7 @@
 ;;; This is written under
 ;;; intel syntax.
 
-extern idtr ; note that this IS referenced from C.
+EXTERN idtr ; note that this IS referenced from C.
 global loadIDT ; define a global function
 
 ; here we define loadIDT

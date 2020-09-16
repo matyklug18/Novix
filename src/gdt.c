@@ -10,7 +10,7 @@ typedef struct {
 
 
 /* Make a variable with the type gdtr_t for gdt.asm */
-extern gdtr_t gdtr = { 69, 69 };
+gdtr_t gdtr = { 69, 69 };
 
 
 /* Define some extern 32 bit registers */

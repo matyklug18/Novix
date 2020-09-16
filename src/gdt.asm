@@ -1,4 +1,4 @@
-extern gdtr
+EXTERN gdtr
 global loadGDT ; make global
 loadGDT:
     lgdt [gdtr]
