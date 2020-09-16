@@ -14,7 +14,8 @@ loadGDT:
     ; so do like jmp <selector>:<label>
     ; for instance
 
-    jmp 0x08:part2
+    jmp part2
+
 part2:
     cli
     ret
