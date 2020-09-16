@@ -1,6 +1,6 @@
-/* Niuxfetch
- * This is the official code for Niuxfetch,
- * Which is a fetch tool written exactly for Niux
+/* Novixfetch
+ * This is the official code for Novixfetch,
+ * Which is a fetch tool written exactly for Novix
 */
 
 
@@ -9,9 +9,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
-// niuxfetch
-void niux_fetch(void){
-    terminal_writestring("|\\  | OS: Niux \n");
+// novixfetch
+void novix_fetch(void){
+    terminal_writestring("|\\  | OS: Novix \n");
     terminal_writestring("| \\ | Kernel: 0.0 BETA \n");
     terminal_writestring("|  \\| Packages: 0 \n");
 }

@@ -1,4 +1,4 @@
-;;; IDT For Niux
+;;; IDT For Novix
 ;;; This is written under
 ;;; intel syntax.
 
