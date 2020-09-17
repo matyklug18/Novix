@@ -165,15 +165,22 @@ void kernel_main() {
 	Terminal terminal;
 	terminal << logo;
 
-	terminal.write(Terminal::Status);
-	terminal.write("Booting Nova Vita...");
+	// Show boot message
+	terminal.write("Booting Nova Vita.     [$LIGHT_BLUE!--$LIGHT_GREY!]");
 	terminal.write("\n");
 
+	// Initialize the GDT
 	loadGDT();
+	terminal.write("Initialized GDT        [$LIGHT_GREEN!ok$LIGHT_GREY!]");
+	terminal.write("\n");
+	// initialize the IDT
 	installIDT();
+	terminal.write("Initialized IDT.       [$LIGHT_GREEN!ok$LIGHT_GREY!]");
+	terminal.write("\n");
 
-	terminal.write(Terminal::Good);
-	terminal.write("Boot process complete.");
+
+	// Show that the boot has been completed.
+	terminal.write("Boot process complete. [$LIGHT_GREEN!:)$LIGHT_GREY!]");
 	terminal.write("\n");
 }
 
