@@ -5,6 +5,7 @@
 #include "asm.h"
 #include "gdt.h"
 #include "terminal.h"
+// #include "io.h"
 
 extern "C" {
 
@@ -28,8 +29,9 @@ void kernel_main() {
 	terminal.write("Boot process complete.\0");
 	terminal.write("\n");
 
+
 	asm volatile ("int $0x3");
-	asm volatile ("int $0x4"); 
+	asm volatile ("int $0x4");
 
 	while (true) {}
 }
