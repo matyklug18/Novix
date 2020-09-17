@@ -13,6 +13,7 @@ Nova Vita requires the following things to be built:
 - NASM
 - GNU Binutils
 
+If you are on Arch Linux, you can use the novix-devel-meta AUR package to install these things.
 # Building
 
 ### NixOS

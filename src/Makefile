@@ -24,6 +24,7 @@ build: asm
 		$(BUILD_DIR)/memset.o \
 		$(BUILD_DIR)/isr.o \
 		gdt.cpp \
+		io.cpp \
 		terminal.cpp \
 		kernel.cpp \
 		boot.s

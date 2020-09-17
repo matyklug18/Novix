@@ -5,7 +5,7 @@
 #include "asm.h"
 #include "gdt.h"
 #include "terminal.h"
-// #include "io.h"
+#include "io.h"
 
 extern "C" {
 
@@ -19,19 +19,12 @@ void kernel_main() {
 	terminal.write("Booting Nova Vita.\0");
 	terminal.write("\n");
 
-	loadTables();
-	terminal.write(Terminal::Status);
-	terminal.write("Set up tables.\0");
-	terminal.write("\n");
+	outb(0x21 , 0xFD);
 
 	// Show that the boot has been completed.
 	terminal.write(Terminal::Good);
 	terminal.write("Boot process complete.\0");
 	terminal.write("\n");
-
-
-	asm volatile ("int $0x3");
-	asm volatile ("int $0x4");
 
 	while (true) {}
 }

@@ -29,6 +29,21 @@ _start:
     /* stack */
     mov $stack_top, %esp
 
+    cli
+
+    call loadGDT
+
+    mov %cr0, %eax
+    or 1, %al
+    mov %eax, %cr0
+
+    call loadIDT
+
+    sti
+
+    jmp $0x8,$protectedModeMain
+
+protectedModeMain:
     /* here we call kernel_main */
     call kernel_main
 
@@ -36,7 +51,6 @@ _start:
     into an infinite loop */
 1:	hlt
     jmp 1b
-
 
 /* set thie size of the _start symbol to the current location */
 .size _start, . - _start

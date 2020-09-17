@@ -132,16 +132,32 @@ void loadIDT()
 
 struct Registers
 {
-   uint32_t ds;
-   uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax;
-   uint32_t interruptNumber, errorCode;
-   uint32_t eip, cs, eflags, useresp, ss;
+    uint32_t ds;
+    uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax;
+    uint32_t interruptNumber, errorCode;
+    uint32_t eip, cs, eflags, useresp, ss;
 };
+
+
+void ISRHandlerImpl(Registers& registers)
+{
+    if (registers.interruptNumber == 9) {
+        auto keycode = inb(0x60);
+
+        if (keycode < 0) {
+            return;
+        }
+
+        Terminal::instance->write(keycode);
+        Terminal::instance->write("\n");
+    }
+}
 
 void ISRHandler(Registers registers)
 {
-    Terminal::instance->println("Got an interrupt!");
-    outb(0x21 , 0xFD);
+    outb(0xA0, 0x20);
+    ISRHandlerImpl(registers);
+    outb(0x20, 0x20);
 }
 
 void loadTables()

@@ -109,6 +109,7 @@ void Terminal::write(const char *data)
 {
 	write(data, strlen(data));
 }
+<<<<<<< HEAD
 
 void Terminal::writeline(const char *data)
 { 
@@ -116,6 +117,33 @@ void Terminal::writeline(const char *data)
 }
 
 [deprecated] void Terminal::println(const char *data)
+=======
+void Terminal::write(int data)
+{
+	auto convert = [](unsigned int num)
+	{ 
+		static char numberCharacters[]= "0123456789";
+		static char buffer[64];
+		char *ptr;
+		
+		ptr = &buffer[49];
+		*ptr = '\0';
+		
+		do {
+			*--ptr = numberCharacters[num % 10];
+			num /= 10;
+		} while(num != 0);
+		
+		return ptr;
+	};
+
+	if (data < 0) {
+		write("-");
+	}
+	write(convert(data));
+}
+void Terminal::println(const char *data)
+>>>>>>> b52e7038a5a993cb8e71e52a9ee7251bb694cc6f
 {
 	write(data);
 	write("\n");
@@ -131,12 +159,6 @@ void Terminal::shift()
 		buffer[i] = vga_entry(' ', VGA_COLOR_LIGHT_GREY);
 	}
 	row--;
-}
-
-Terminal &operator<<(Terminal &term, const char *data)
-{
-	term.write(data);
-	return term;
 }
 
 Terminal *Terminal::instance;
