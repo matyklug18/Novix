@@ -17,7 +17,6 @@ build: asm
 		-z -T linker.ld \
 		-nostdlib \
 		-ffreestanding -O2 -Wall -Wextra -Wreturn-value \
-		-lgcc \
 		$(BUILD_DIR)/gdt.o \
 		$(BUILD_DIR)/idt.o \
 		gdt.c \
