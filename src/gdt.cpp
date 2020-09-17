@@ -1,6 +1,7 @@
 #include "asm.h"
 #include "gdt.h"
 #include "terminal.h"
+#include "io.h"
 
 extern "C"
 {
@@ -140,6 +141,7 @@ struct Registers
 void ISRHandler(Registers registers)
 {
     Terminal::instance->println("Got an interrupt!");
+    outb(0x21 , 0xFD);
 }
 
 void loadTables()

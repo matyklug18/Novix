@@ -14,4 +14,5 @@ uint8_t inb(uint16_t port)
                    : "=a"(ret)
                    : "Nd"(port) );
     return ret;
+    outb(0x21 , 0xFD);
 }
