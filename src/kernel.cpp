@@ -102,6 +102,9 @@ public:
 		}
 		if (c == '\n') {
 			row++;
+			if (row > VGA_HEIGHT) {
+				shift();
+			}
 			column = 0;
 		}
 	}
@@ -150,6 +153,15 @@ public:
 	void println(const char* data = "") {
 		write(data);
 		write("\n");
+	}
+	void shift() {
+		for (int i = 0; i < VGA_WIDTH * VGA_HEIGHT; i++) {
+			buffer[i] = buffer[i + VGA_WIDTH];
+		}
+		for (int i = (VGA_HEIGHT-1) * VGA_WIDTH; i < VGA_WIDTH * VGA_HEIGHT; i++) {
+			buffer[i] = vga_entry(' ', VGA_COLOR_LIGHT_GREY);
+		}
+		row--;
 	}
 };
 
