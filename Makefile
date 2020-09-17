@@ -26,3 +26,5 @@ all:
 
 qemu: all
 	qemu-system-i386 -cdrom $(BUILD_DIR)/novix.iso
+firsttime:
+	./toolchain.sh
