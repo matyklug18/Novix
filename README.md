@@ -15,6 +15,12 @@ Nova Vita requires the following things to be built:
 
 # Building
 
+### NixOS
+
+Run the `nix-make.sh` script. 
+
+### Make
+
 Run `make` in the root folder of the directory. Artifacts will be located in
 `_build`.
 
