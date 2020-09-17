@@ -1,56 +1,31 @@
-## Novix: Another Kernel, For an OS.
-Kernel built in Pure Assembly, and C
+# Nova Vita
 
+Nova Vita is a new operating system to bring a new life to computing.
 
-## What does it do?
+# Requirements
 
-It does kernel things, such as handle interrput
-requests.
+Nova Vita requires the following things to be built:
 
-
-# Development
-
-## How do you build?
-
-```
-cd src
-make clean # <---- this is to make sure everything unnecessary is gone (not needed)
-make build # <---- build the .bin file
-make iso   # <---- create the iso (will be in src/novix.iso)
-````
-
-You're gonna need these dependencies for building:
-
-- Grub
-- Mtools
+- GNU Make
+- Clang with cross compilation targets supported
+- grub-mkrescue or grub2-mkrescue
 - Xorriso
-- Nasm
-- Binutils
+- NASM
+- GNU Binutils
 
-You're also gonna want to build the i686-elf toolchain with
+# Building
 
-```
-./toolchain.sh
-```
-
-## What are the dependencies I need?
-
-- Grub
-- Mtools
-- Xorriso
-- Nasm
-- Binutils
-- qemu
-- (if you run arch, this is required. Not sure about other distros.) qemu-arch-extra
+Run `make` in the root folder of the directory. Artifacts will be located in
+`_build`.
 
 ## Running the kernel
 
 ### On real hardware
 ```
-sudo dd if=novix.iso of=[device] bs=4M
+sudo dd if=_build/novavita.iso of=[device] bs=4M
 ```
 
 ### With QEMU
 ```
-qemu-system-i386 -cdrom novix.iso
+make qemu
 ```

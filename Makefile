@@ -23,4 +23,4 @@ all:
 	$(MAKE) -C src all
 
 qemu: all
-	qemu-system-i386 $(BUILD_DIR)/novix.iso -m 1G
+	qemu-system-i386 $(BUILD_DIR)/novavita.iso -m 1G
