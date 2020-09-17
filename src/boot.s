@@ -34,7 +34,6 @@ _start:
 
     /* if the system has nothing else to do, put the pc
     into an infinite loop */
-    cli
 1:	hlt
     jmp 1b
 

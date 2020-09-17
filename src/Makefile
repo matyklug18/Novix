@@ -19,8 +19,7 @@ build: asm
 		-ffreestanding -O2 -Wall -Wextra -Wreturn-value \
 		$(BUILD_DIR)/gdt.o \
 		$(BUILD_DIR)/idt.o \
-		gdt.c \
-		idt.c \
+		idt.cpp \
 		kernel.cpp \
 		boot.s
 

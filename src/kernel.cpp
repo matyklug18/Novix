@@ -47,7 +47,7 @@ static inline uint16_t vga_entry(unsigned char uc, uint8_t color)
 size_t strlen(const char* str)
 {
 	size_t len = 0;
-	while (str[len])
+	while (str[len] && str[len] != '\0')
 		len++;
 	return len;
 }
@@ -74,8 +74,8 @@ class Terminal
 	uint16_t* buffer;
 
 public:
-	static constexpr const char* Status = "$WHITE![$LIGHT_BLUE!--$WHITE!] $LIGHT_GREY!";
-	static constexpr const char* Good = "$WHITE![$LIGHT_GREEN!:)$WHITE!] $LIGHT_GREY!";
+	static constexpr const char* Status = "$WHITE![$LIGHT_BLUE!--$WHITE!] $LIGHT_GREY!\0";
+	static constexpr const char* Good = "$WHITE![$LIGHT_GREEN!:)$WHITE!] $LIGHT_GREY!\0";
 
 	Terminal() : row(0), column(0) {
 		buffer = (uint16_t*) 0xB8000;
@@ -178,22 +178,27 @@ void kernel_main() {
 	terminal << logo;
 
 	// Show boot message
-	terminal.write("Booting Nova Vita.     [$LIGHT_BLUE!--$LIGHT_GREY!]");
+	terminal.write(Terminal::Status);
+	terminal.write("Booting Nova Vita.\0");
 	terminal.write("\n");
 
 	// Initialize the GDT
 	loadGDT();
-	terminal.write("Initialized GDT        [$LIGHT_GREEN!ok$LIGHT_GREY!]");
+	terminal.write(Terminal::Status);
+	terminal.write("Initialized GDT.\0");
 	terminal.write("\n");
 	// initialize the IDT
-	installIDT();
-	terminal.write("Initialized IDT.       [$LIGHT_GREEN!ok$LIGHT_GREY!]");
+	initIDT();
+	terminal.write(Terminal::Status);
+	terminal.write("Initialized IDT.\0");
 	terminal.write("\n");
-
 
 	// Show that the boot has been completed.
-	terminal.write("Boot process complete. [$LIGHT_GREEN!:)$LIGHT_GREY!]");
+	terminal.write(Terminal::Good);
+	terminal.write("Boot process complete.\0");
 	terminal.write("\n");
+
+	while (true) {}
 }
 
 }

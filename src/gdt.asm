@@ -1,21 +1,37 @@
 EXTERN gdtr
+
+gdt:
+
+gdt_null:
+    dq 0
+
+gdt_code:
+    dw 0FFFFh
+    dw 0
+
+    db 0
+    db 10011010b
+    db 11001111b
+    db 0
+
+gdt_data:
+    dw 0FFFFh
+    dw 0
+
+    db 0
+    db 10010010b
+    db 11001111b
+    db 0
+
+gdt_end:
+
+gdt_desc:
+    dw gdt_end - gdt - 1
+    dd gdt
+
 global loadGDT ; make global
 loadGDT:
-    lgdt [gdtr]
-
-    ; load all the segment registers here
-    ; you can't directly mov to them so you need to do like
-    ; mov ax, <selector>
-    ; mov ds, ax
-    ; mov es, ax
-    ; ...
-
-    ; you cannot directly set cs, you instead need to do a far jump
-    ; so do like jmp <selector>:<label>
-    ; for instance
-
-    jmp part2
-
-part2:
     cli
+    lgdt [gdt_desc]
+    sti
     ret

@@ -1,4 +1,5 @@
 extern "C" {
-extern void loadGDT();
-extern void installIDT();
+void loadGDT();
+void loadIDT();
+void initIDT();
 }
