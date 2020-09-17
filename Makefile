@@ -24,3 +24,6 @@ all:
 
 qemu: all
 	qemu-system-i386 $(BUILD_DIR)/novavita.iso -m 1G
+
+clean:
+	rm _build/ -r
