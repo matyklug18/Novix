@@ -13,11 +13,10 @@ asm: gdt.asm idt.asm
 
 build: asm
 	$(GCC) \
-		-o $(BUILD_DIR)/novix.bin \
+		-o $(BUILD_DIR)/novavita.bin \
 		-z -T linker.ld \
 		-nostdlib \
 		-ffreestanding -O2 -Wall -Wextra -Wreturn-value \
-		-lgcc \
 		$(BUILD_DIR)/gdt.o \
 		$(BUILD_DIR)/idt.o \
 		gdt.c \
@@ -28,7 +27,7 @@ build: asm
 iso: build
 	mkdir -p $(BUILD_DIR)/isodir/boot/grub
 	cp grub.cfg $(BUILD_DIR)/isodir/boot/grub/grub.cfg
-	cp $(BUILD_DIR)/novix.bin $(BUILD_DIR)/isodir/boot/novix.bin
-	$(MKRESCUE) -o $(BUILD_DIR)/novix.iso $(BUILD_DIR)/isodir
+	cp $(BUILD_DIR)/novavita.bin $(BUILD_DIR)/isodir/boot/novavita.bin
+	$(MKRESCUE) -o $(BUILD_DIR)/novavita.iso $(BUILD_DIR)/isodir
 
 all: iso
