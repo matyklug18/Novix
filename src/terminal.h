@@ -22,8 +22,21 @@ public:
 	void put_char(char c, uint8_t color);
 	void write(const char* data, size_t size);
 	void write(const char* data);
+	void write(int num);
 	void println(const char* data = "");
 	void shift();
 };
 
-Terminal& operator<<(Terminal& term, const char* data);
+template<typename T>
+Terminal& operator<<(Terminal& term, T data)
+{
+	term.write(data);
+	return term;
+}
+
+template<typename T>
+Terminal* operator<<(Terminal* term, T data)
+{
+	term->write(data);
+	return term;
+}
