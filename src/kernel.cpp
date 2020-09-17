@@ -52,51 +52,7 @@ size_t strlen(const char* str)
 	return len;
 }
 
-static const size_t VGA_WIDTH = 80;
-static const size_t VGA_HEIGHT = 25;
-
-size_t terminal_row;
-size_t terminal_column;
-uint16_t* terminal_buffer;
-
-void terminal_initialize(void)
-{
-	terminal_row = 0;
-	terminal_column = 0;
-	terminal_buffer = (uint16_t*) 0xB8000;
-	for (size_t y = 0; y < VGA_HEIGHT; y++) {
-		for (size_t x = 0; x < VGA_WIDTH; x++) {
-			const size_t index = y * VGA_WIDTH + x;
-			terminal_buffer[index] = vga_entry(' ', VGA_COLOR_LIGHT_GREY);
-		}
-	}
-}
-
-void terminal_putentryat(char c, uint8_t color, size_t x, size_t y)
-{
-	const size_t index = y * VGA_WIDTH + x;
-	terminal_buffer[index] = vga_entry(c, color);
-}
-
-void terminal_putchar(char c, uint8_t color)
-{
-	if (c != '\n') {
-		terminal_putentryat(c, color, terminal_column, terminal_row);
-	}
-	if (++terminal_column == VGA_WIDTH) {
-		terminal_column = 0;
-		if (++terminal_row == VGA_HEIGHT)
-			terminal_row = 0;
-	}
-	if (c == '\n'){
-		terminal_row++;
-		terminal_column = 0;
-	}
-}
-
 #define CHECK_COLOR(farbe) if (strcomp(#farbe, colorCode)) color = VGA_COLOR_ ## farbe;
-#define STATUS "$WHITE![$LIGHT_BLUE!--$WHITE!] $LIGHT_GREY!"
-#define GOOD "$WHITE![$LIGHT_GREEN!:)$WHITE!] $LIGHT_GREY!"
 
 bool strcomp(const char* lhs, const char *rhs) {
 	for (; *lhs; lhs++) {
@@ -108,73 +64,117 @@ bool strcomp(const char* lhs, const char *rhs) {
 	return true;
 }
 
-void terminal_write(const char* data, size_t size)
+class Terminal
 {
-	uint8_t color = VGA_COLOR_LIGHT_GREY;
-	char colorCode[15];
+	static const size_t VGA_WIDTH = 80;
+	static const size_t VGA_HEIGHT = 25;
 
-	for (; *data != '\0'; data++) {
-		if (*data == '$') {
-			int iter = 0;
-			data++;
-			while (true) {
-				if (*data != '!') {
-					colorCode[iter] = *data;
-					iter++;
-					data++;
-				} else {
-					data++;
-					break;
-				}
+	size_t row;
+	size_t column;
+	uint16_t* buffer;
+
+public:
+	static constexpr const char* Status = "$WHITE![$LIGHT_BLUE!--$WHITE!] $LIGHT_GREY!";
+	static constexpr const char* Good = "$WHITE![$LIGHT_GREEN!:)$WHITE!] $LIGHT_GREY!";
+
+	Terminal() : row(0), column(0) {
+		buffer = (uint16_t*) 0xB8000;
+		for (auto y = 0; y < VGA_HEIGHT; y++) {
+			for (auto x = 0; x < VGA_WIDTH; x++) {
+				put_entry_at(' ', VGA_COLOR_LIGHT_GREY, x, y);
 			}
-			colorCode[iter+1] = 0;
-			CHECK_COLOR(BLACK)
-			CHECK_COLOR(BLUE)
-			CHECK_COLOR(GREEN)
-			CHECK_COLOR(CYAN)
-			CHECK_COLOR(RED)
-			CHECK_COLOR(MAGENTA)
-			CHECK_COLOR(BROWN)
-			CHECK_COLOR(LIGHT_GREY)
-			CHECK_COLOR(DARK_GREY)
-			CHECK_COLOR(LIGHT_BLUE)
-			CHECK_COLOR(LIGHT_GREEN)
-			CHECK_COLOR(LIGHT_CYAN)
-			CHECK_COLOR(LIGHT_RED)
-			CHECK_COLOR(LIGHT_MAGENTA)
-			CHECK_COLOR(LIGHT_BROWN)
-			CHECK_COLOR(WHITE)
 		}
-		terminal_putchar(*data, color);
 	}
-}
+	void put_entry_at(char c, uint8_t color, size_t x, size_t y) {
+		auto index = (y * VGA_WIDTH) + x;
+		buffer[index] = vga_entry(c, color);
+	}
+	void put_char(char c, uint8_t color)
+	{
+		if (c != '\n') {
+			put_entry_at(c, color, column, row);
+		}
+		if (++column == VGA_WIDTH) {
+			column = 0;
+			if (++row == VGA_HEIGHT) {
+				row = 0;
+			}
+		}
+		if (c == '\n') {
+			row++;
+			column = 0;
+		}
+	}
+	void write(const char* data, size_t size) {
+		uint8_t color = VGA_COLOR_LIGHT_GREY;
+		char colorCode[15];
 
-void terminal_writestring(const char* data)
-{
-	terminal_write(data, strlen(data));
-}
+		for (; *data != '\0'; data++) {
+			if (*data == '$') {
+				int iter = 0;
+				data++;
+				while (true) {
+					if (*data != '!') {
+						colorCode[iter] = *data;
+						iter++;
+						data++;
+					} else {
+						data++;
+						break;
+					}
+				}
+				colorCode[iter+1] = 0;
+				CHECK_COLOR(BLACK)
+				CHECK_COLOR(BLUE)
+				CHECK_COLOR(GREEN)
+				CHECK_COLOR(CYAN)
+				CHECK_COLOR(RED)
+				CHECK_COLOR(MAGENTA)
+				CHECK_COLOR(BROWN)
+				CHECK_COLOR(LIGHT_GREY)
+				CHECK_COLOR(DARK_GREY)
+				CHECK_COLOR(LIGHT_BLUE)
+				CHECK_COLOR(LIGHT_GREEN)
+				CHECK_COLOR(LIGHT_CYAN)
+				CHECK_COLOR(LIGHT_RED)
+				CHECK_COLOR(LIGHT_MAGENTA)
+				CHECK_COLOR(LIGHT_BROWN)
+				CHECK_COLOR(WHITE)
+			}
+			put_char(*data, color);
+		}
+	}
+	void write(const char* data) {
+		write(data, strlen(data));
+	}
+	void println(const char* data = "") {
+		write(data);
+		write("\n");
+	}
+};
 
-void terminal_println(const char* data)
+Terminal& operator<<(Terminal& term, const char* data)
 {
-	terminal_write(data, strlen(data));
-	terminal_write("\n", 1);
+	term.write(data);
+	return term;
 }
 
 extern "C" {
 
-void kernel_main(void) {
-	terminal_initialize();
-	terminal_println(logo);
-	terminal_println("");
-	terminal_println("");
+void kernel_main() {
+	Terminal terminal;
+	terminal << logo;
 
-	terminal_println(STATUS "Booting Nova Vita...");
+	terminal.write(Terminal::Status);
+	terminal.write("Booting Nova Vita...");
+	terminal.write("\n");
 
-	// First we load the GDT and IDT
 	loadGDT();
 	installIDT();
 
-	terminal_println(GOOD "Boot process complete.");
+	terminal.write(Terminal::Good);
+	terminal.write("Boot process complete.");
+	terminal.write("\n");
 }
 
 }
