@@ -1,37 +1,29 @@
-.DEFAULT_GOAL := all
+.DEFAULT_GOAL := bad
+
+bad:
+	$(error "Please run make from the repo root.")
 
 clean:
 	rm -rf isodir
 	rm -f *.o *.iso *.bin
 
-kernel: kernel.c
-	$(GCC) -c kernel.c -o $(BUILD_DIR)/kernel.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
-
-gdt: gdt.c
-	$(GCC) -c gdt.c -o $(BUILD_DIR)/gdt_2.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
-
-boot: boot.s
-	$(ASSEMBLER) boot.s -o $(BUILD_DIR)/boot.o
-
-idt: idt.c
-	$(GCC) -c idt.c -o $(BUILD_DIR)/idt_2.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
-
 asm: gdt.asm idt.asm
 	nasm -f elf gdt.asm -o $(BUILD_DIR)/gdt.o
 	nasm -f elf idt.asm -o $(BUILD_DIR)/idt.o
 
-build: kernel gdt boot idt asm
+build: asm
 	$(GCC) \
 		-o $(BUILD_DIR)/novix.bin \
-		-T linker.ld \
-		-ffreestanding -O2 -nostdlib \
+		-z -T linker.ld \
+		-nostdlib \
+		-ffreestanding -O2 -Wall -Wextra \
 		-lgcc \
-		$(BUILD_DIR)/boot.o \
 		$(BUILD_DIR)/gdt.o \
-		$(BUILD_DIR)/gdt_2.o \
 		$(BUILD_DIR)/idt.o \
-		$(BUILD_DIR)/idt_2.o \
-		$(BUILD_DIR)/kernel.o
+		gdt.c \
+		idt.c \
+		kernel.cpp \
+		boot.s
 
 iso: build
 	mkdir -p $(BUILD_DIR)/isodir/boot/grub

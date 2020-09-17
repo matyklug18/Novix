@@ -12,11 +12,9 @@ endif
 
 ROOT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 BUILD_DIR := $(ROOT_DIR)/_build
-ASSEMBLER := $(ROOT_DIR)/i686-elf-cross/bin/i686-elf-as
-GCC := $(ROOT_DIR)/i686-elf-cross/bin/i686-elf-gcc
+GCC := clang --target=i686-pc-none-elf -march=i686
 
 export MKRESCUE
-export ASSEMBLER
 export GCC
 export BUILD_DIR
 
@@ -25,4 +23,4 @@ all:
 	$(MAKE) -C src all
 
 qemu: all
-	qemu-system-i386 -cdrom $(BUILD_DIR)/novix.iso
+	qemu-system-i386 $(BUILD_DIR)/novix.iso -m 1G

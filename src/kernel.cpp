@@ -1,18 +1,18 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
-#include "tools/nfetch.c"
 #include "logo.h"
+#include "asm.h"
 
 /* Check if the compiler thinks you are targeting the wrong operating system. */
-#if defined(__linux__)
-#error "You are not using a cross-compiler, you will most certainly run into trouble"
-#endif
+// #if defined(__linux__)
+// #error "You are not using a cross-compiler, you will most certainly run into trouble"
+// #endif
 
-/* This tutorial will only work for the 32-bit ix86 targets. */
-#if !defined(__i386__)
-#error "This tutorial needs to be compiled with a ix86-elf compiler"
-#endif
+// /* This tutorial will only work for the 32-bit ix86 targets. */
+// #if !defined(__i386__)
+// #error "This tutorial needs to be compiled with a ix86-elf compiler"
+// #endif
 
 /* Hardware text mode color constants. */
 enum vga_color {
@@ -160,6 +160,8 @@ void terminal_println(const char* data)
 	terminal_write("\n", 1);
 }
 
+extern "C" {
+
 void kernel_main(void) {
 	terminal_initialize();
 	terminal_println(logo);
@@ -173,4 +175,6 @@ void kernel_main(void) {
 	installIDT();
 
 	terminal_println(GOOD "Boot process complete.");
+}
+
 }

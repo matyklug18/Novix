@@ -1,4 +1,4 @@
-extern const char *logo =
+const char *logo =
 "$LIGHT_RED!                             \n"
 "                  *****                 \n"
 "               **********.              \n"
