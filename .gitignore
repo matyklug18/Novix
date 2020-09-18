@@ -3,3 +3,4 @@
 build/
 i686-elf-cross/
 _build
+.idea/
