@@ -18,7 +18,7 @@ export MKRESCUE
 export GCC
 export BUILD_DIR
 
-all: clean
+all:
 	mkdir -p $(BUILD_DIR)
 	$(MAKE) -C src all
 
